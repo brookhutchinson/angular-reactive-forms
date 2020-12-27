@@ -1,15 +1,34 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+// components
+import { Component, OnInit }        from '@angular/core';
+import { AfterViewInit, OnDestroy } from '@angular/core';
+import { ViewChildren, ElementRef } from '@angular/core';
 
-import { Observable, Subscription, fromEvent, merge } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+// forms
+import { FormArray }                from '@angular/forms';
+import { FormBuilder }              from '@angular/forms';
+import { FormControl }              from '@angular/forms';
+import { FormControlName }          from '@angular/forms';
+import { FormGroup }                from '@angular/forms';
+import { Validators }               from '@angular/forms';
 
-import { Product } from './product';
-import { ProductService } from './product.service';
+// form validators
+import { NumberValidators }         from './../shared/number.validator';
+import { GenericValidator }         from './../shared/generic-validator';
 
-import { NumberValidators } from '../shared/number.validator';
-import { GenericValidator } from '../shared/generic-validator';
+// services
+import { ActivatedRoute }           from '@angular/router';
+import { Router }                   from '@angular/router';
+import { ProductService }           from './product.service';
+
+// interfaces
+import { Product }                  from './product';
+
+// rxjs
+import { Observable }               from 'rxjs';
+import { fromEvent }                from 'rxjs';
+import { merge }                    from 'rxjs';
+import { Subscription }             from 'rxjs';
+import { debounceTime }             from 'rxjs/operators';
 
 @Component({
   templateUrl: './product-edit.component.html'
@@ -24,7 +43,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   product: Product;
   private sub: Subscription;
 
-  // Use with the generic validation message class
+  // use with the generic validation message class
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } };
   private genericValidator: GenericValidator;
@@ -33,13 +52,8 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.productForm.get('tags') as FormArray;
   }
 
-  constructor(private fb: FormBuilder,
-              private route: ActivatedRoute,
-              private router: Router,
-              private productService: ProductService) {
-
-    // Defines all of the validation messages for the form.
-    // These could instead be retrieved from a file or database.
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private productService: ProductService) {
+    // define all of the validation messages for the form
     this.validationMessages = {
       productName: {
         required: 'Product name is required.',
@@ -54,23 +68,21 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
 
-    // Define an instance of the validator for use with this form,
-    // passing in this form's set of validation messages.
+    // define an instance of the validator for use with this form,
+    // passing in this form's set of validation messages
     this.genericValidator = new GenericValidator(this.validationMessages);
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.productForm = this.fb.group({
-      productName: ['', [Validators.required,
-                         Validators.minLength(3),
-                         Validators.maxLength(50)]],
+      productName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       productCode: ['', Validators.required],
       starRating: ['', NumberValidators.range(1, 5)],
       tags: this.fb.array([]),
       description: ''
     });
 
-    // Read the product Id from the route parameter
+    // read the product id from the route parameter
     this.sub = this.route.paramMap.subscribe(
       params => {
         const id = +params.get('id');
@@ -79,18 +91,17 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  ngAfterViewInit(): void {
-    // Watch for the blur event from any input element on the form.
-    // This is required because the valueChanges does not provide notification on blur
+  ngAfterViewInit() {
+    // watch for blur event from any input element on the form
+    // this is required because the valueChanges does not provide notification on blur
     const controlBlurs: Observable<any>[] = this.formInputElements
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
-    // Merge the blur event observable with the valueChanges observable
-    // so we only need to subscribe once.
+    // Merge the blur event observable with the valueChanges observable so we only need to subscribe once
     merge(this.productForm.valueChanges, ...controlBlurs).pipe(
       debounceTime(800)
     ).subscribe(value => {
@@ -98,27 +109,27 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  addTag(): void {
+  addTag() {
     this.tags.push(new FormControl());
   }
 
-  deleteTag(index: number): void {
+  deleteTag(index: number) {
     this.tags.removeAt(index);
     this.tags.markAsDirty();
   }
 
-  getProduct(id: number): void {
-    this.productService.getProduct(id)
-      .subscribe({
-        next: (product: Product) => this.displayProduct(product),
-        error: err => this.errorMessage = err
-      });
+  getProduct(id: number) {
+    this.productService.getProduct(id).subscribe({
+      next: (product: Product) => this.displayProduct(product),
+      error: err => this.errorMessage = err
+    });
   }
 
-  displayProduct(product: Product): void {
+  displayProduct(product: Product) {
     if (this.productForm) {
       this.productForm.reset();
     }
+
     this.product = product;
 
     if (this.product.id === 0) {
@@ -127,42 +138,42 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pageTitle = `Edit Product: ${this.product.productName}`;
     }
 
-    // Update the data on the form
+    // update the data on the form
     this.productForm.patchValue({
       productName: this.product.productName,
       productCode: this.product.productCode,
       starRating: this.product.starRating,
       description: this.product.description
     });
+
     this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
   }
 
   deleteProduct(): void {
     if (this.product.id === 0) {
-      // Don't delete, it was never saved.
+      // do not delete, it was never saved
       this.onSaveComplete();
     } else {
       if (confirm(`Really delete the product: ${this.product.productName}?`)) {
-        this.productService.deleteProduct(this.product.id)
-          .subscribe({
-            next: () => this.onSaveComplete(),
-            error: err => this.errorMessage = err
-          });
+        this.productService.deleteProduct(this.product.id).subscribe({
+          next: () => this.onSaveComplete(),
+          error: err => this.errorMessage = err
+        });
       }
     }
   }
 
-  saveProduct(): void {
+  saveProduct() {
     if (this.productForm.valid) {
       if (this.productForm.dirty) {
         const p = { ...this.product, ...this.productForm.value };
 
         if (p.id === 0) {
-          this.productService.createProduct(p)
-            .subscribe({
-              next: () => this.onSaveComplete(),
-              error: err => this.errorMessage = err
-            });
+          this.productService.createProduct(p).subscribe({
+            next: () => this.onSaveComplete(),
+            error: err => this.errorMessage = err
+          });
+
         } else {
           this.productService.updateProduct(p)
             .subscribe({
@@ -170,17 +181,21 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
               error: err => this.errorMessage = err
             });
         }
+
       } else {
         this.onSaveComplete();
       }
+
     } else {
       this.errorMessage = 'Please correct the validation errors.';
     }
   }
 
-  onSaveComplete(): void {
-    // Reset the form to clear the flags
+  onSaveComplete() {
+    // reset form to clear the flags
     this.productForm.reset();
+
+    // navigate to product list component
     this.router.navigate(['/products']);
   }
 }

@@ -1,10 +1,17 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable }  from '@angular/core';
+import { HttpClient }  from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, tap, map } from 'rxjs/operators';
+// rxjs
+import { Observable } from 'rxjs';
+import { of }         from 'rxjs';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { map }        from 'rxjs/operators';
+import { tap }        from 'rxjs/operators';
 
-import { Product } from './product';
+// interfaces
+import { Product }    from './product';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +19,14 @@ import { Product } from './product';
 export class ProductService {
   private productsUrl = 'api/products';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.productsUrl)
       .pipe(
+        // write to console
         tap(data => console.log(JSON.stringify(data))),
+        // catch error
         catchError(this.handleError)
       );
   }
@@ -26,20 +35,28 @@ export class ProductService {
     if (id === 0) {
       return of(this.initializeProduct());
     }
+
     const url = `${this.productsUrl}/${id}`;
+
     return this.http.get<Product>(url)
       .pipe(
+        // write to console
         tap(data => console.log('getProduct: ' + JSON.stringify(data))),
+        // catch error
         catchError(this.handleError)
       );
   }
 
   createProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
     product.id = null;
+
     return this.http.post<Product>(this.productsUrl, product, { headers })
       .pipe(
+        // write to console
         tap(data => console.log('createProduct: ' + JSON.stringify(data))),
+        // catch error
         catchError(this.handleError)
       );
   }
@@ -47,9 +64,12 @@ export class ProductService {
   deleteProduct(id: number): Observable<{}> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const url = `${this.productsUrl}/${id}`;
+
     return this.http.delete<Product>(url, { headers })
       .pipe(
+        // write to console
         tap(data => console.log('deleteProduct: ' + id)),
+        // catch error
         catchError(this.handleError)
       );
   }
@@ -57,25 +77,27 @@ export class ProductService {
   updateProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const url = `${this.productsUrl}/${product.id}`;
+
     return this.http.put<Product>(url, product, { headers })
       .pipe(
+        // write to console
         tap(() => console.log('updateProduct: ' + product.id)),
-        // Return the product on an update
+        // return the product on an update
         map(() => product),
+        // catch error
         catchError(this.handleError)
       );
   }
 
   private handleError(err): Observable<never> {
-    // in a real world app, we may send the server to some remote logging infrastructure
-    // instead of just logging it to the console
     let errorMessage: string;
+
     if (err.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
+      // a client-side or network error occurred. Handle it accordingly
       errorMessage = `An error occurred: ${err.error.message}`;
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
+      // the backend returned an unsuccessful response code
+      // the response body may contain clues as to what went wrong
       errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
     }
     console.error(err);
@@ -83,7 +105,7 @@ export class ProductService {
   }
 
   private initializeProduct(): Product {
-    // Return an initialized object
+    // return an initialized object
     return {
       id: 0,
       productName: null,

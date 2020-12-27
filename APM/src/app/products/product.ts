@@ -1,4 +1,3 @@
-/* Defines the product entity */
 export interface Product {
   id: number;
   productName: string;
@@ -10,4 +9,3 @@ export interface Product {
   starRating: number;
   imageUrl: string;
 }
-

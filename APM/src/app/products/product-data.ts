@@ -1,10 +1,11 @@
+// services
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
+// interfaces
 import { Product } from './product';
 
 export class ProductData implements InMemoryDbService {
-
-  createDb(): { products: Product[]} {
+  createDb(): { products: Product[] } {
     const products: Product[] = [
       {
         id: 1,
@@ -59,6 +60,7 @@ export class ProductData implements InMemoryDbService {
         imageUrl: 'assets/images/xbox-controller.png'
       }
     ];
+
     return { products };
   }
 }

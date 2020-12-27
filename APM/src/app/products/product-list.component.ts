@@ -1,7 +1,11 @@
+// components
 import { Component, OnInit } from '@angular/core';
 
-import { Product } from './product';
-import { ProductService } from './product.service';
+// services
+import { ProductService }    from './product.service';
+
+// interfaces
+import { Product }           from './product';
 
 @Component({
   templateUrl: './product-list.component.html',
@@ -26,7 +30,7 @@ export class ProductListComponent implements OnInit {
   filteredProducts: Product[] = [];
   products: Product[] = [];
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   performFilter(filterBy: string): Product[] {
     filterBy = filterBy.toLocaleLowerCase();
@@ -34,7 +38,7 @@ export class ProductListComponent implements OnInit {
       product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
   }
 
-  // Checks both the product name and tags
+  // checks both the product name and tags
   performFilter2(filterBy: string): Product[] {
     filterBy = filterBy.toLocaleLowerCase();
     return this.products.filter((product: Product) =>
@@ -42,11 +46,11 @@ export class ProductListComponent implements OnInit {
         (product.tags && product.tags.some(tag => tag.toLocaleLowerCase().indexOf(filterBy) !== -1)));
   }
 
-  toggleImage(): void {
+  toggleImage() {
     this.showImage = !this.showImage;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.productService.getProducts().subscribe({
       next: products => {
         this.products = products;

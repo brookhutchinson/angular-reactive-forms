@@ -1,11 +1,13 @@
+// angular modules
 import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 
-import { ProductEditGuard } from './product-edit.guard';
+// guards
+import { ProductEditGuard }              from './product-edit.guard';
 
 describe('ProductEditGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ProductEditGuard]
+      providers: [ ProductEditGuard ]
     });
   });
 
