@@ -3,7 +3,7 @@ import { Injectable }           from '@angular/core';
 import { CanDeactivate }        from '@angular/router';
 
 // components
-import { ProductEditComponent } from '../../components/product-edit/product-edit.component';
+import { ProductEditComponent } from './../../components/product-edit/product-edit.component';
 
 // rxjs
 import { Observable }           from 'rxjs';

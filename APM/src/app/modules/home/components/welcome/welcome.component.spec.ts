@@ -3,17 +3,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule }   from '@angular/common/http/testing';
 
 // components
-import { ProductDetailComponent }    from './product-detail.component';
+import { WelcomeComponent }          from './welcome.component';
 
 // schemas
 import { NO_ERRORS_SCHEMA }          from '@angular/core';
 
-xdescribe('ProductDetailComponent', () => {
+describe('WelcomeComponent', () => {
   // component
-  let productDetailComponent: ProductDetailComponent;
+  let welcomeComponent: WelcomeComponent;
 
   // fixture
-  let fixture: ComponentFixture<ProductDetailComponent>;
+  let fixture: ComponentFixture<WelcomeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -23,7 +23,7 @@ xdescribe('ProductDetailComponent', () => {
         HttpClientTestingModule,
       ],
       // components
-      declarations: [ ProductDetailComponent ],
+      declarations: [ WelcomeComponent ],
       // services
       providers: [],
       // schemas
@@ -33,20 +33,20 @@ xdescribe('ProductDetailComponent', () => {
 
   beforeEach(() => {
     // create instance of component fixture
-    fixture = TestBed.createComponent(ProductDetailComponent);
+    fixture = TestBed.createComponent(WelcomeComponent);
 
     // create instance of component
-    productDetailComponent = fixture.componentInstance;
+    welcomeComponent = fixture.componentInstance;
 
     // run change detection
     fixture.detectChanges();
   });
 
-  it('should be named ProductDetailComponent', () => {
-    expect(ProductDetailComponent.name).toBe('ProductDetailComponent');
+  it('should be named WelcomeComponent', () => {
+    expect(WelcomeComponent.name).toBe('WelcomeComponent');
   });
 
-  it('should create ProductDetailComponent', () => {
-    expect(productDetailComponent).toBeTruthy();
+  it('should create WelcomeComponent', () => {
+    expect(welcomeComponent).toBeTruthy();
   });
 });

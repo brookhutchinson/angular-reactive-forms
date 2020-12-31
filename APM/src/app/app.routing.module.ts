@@ -1,11 +1,11 @@
 // modules
-import { NgModule }               from '@angular/core';
-import { PreloadAllModules }      from '@angular/router';
-import { RouterModule }           from '@angular/router';
-import { Routes }                 from '@angular/router';
+import { NgModule }          from '@angular/core';
+import { PreloadAllModules } from '@angular/router';
+import { RouterModule }      from '@angular/router';
+import { Routes }            from '@angular/router';
 
 // components
-import { WelcomeComponent }       from './modules/home/components/welcome/welcome.component';
+import { WelcomeComponent }  from './modules/home/components/welcome/welcome.component';
 
 // define routes
 const routes: Routes = [

@@ -1,17 +1,18 @@
 // angular modules
-import { TestBed, inject, waitForAsync } from '@angular/core/testing';
+import { TestBed }          from '@angular/core/testing';
 
 // guards
-import { ProductEditGuard }              from './product-edit.guard';
+import { ProductEditGuard } from './product-edit.guard';
 
 describe('ProductEditGuard', () => {
+  let guard: ProductEditGuard;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [ ProductEditGuard ]
-    });
+    TestBed.configureTestingModule({});
+    guard = TestBed.inject(ProductEditGuard);
   });
 
-  it('should ...', inject([ProductEditGuard], (guard: ProductEditGuard) => {
+  it('should create ProductEditGuard', () => {
     expect(guard).toBeTruthy();
-  }));
+  });
 });

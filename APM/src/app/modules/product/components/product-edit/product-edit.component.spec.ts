@@ -3,17 +3,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule }   from '@angular/common/http/testing';
 
 // components
-import { ProductDetailComponent }    from './product-detail.component';
+import { ProductEditComponent }      from './product-edit.component';
 
 // schemas
 import { NO_ERRORS_SCHEMA }          from '@angular/core';
 
-xdescribe('ProductDetailComponent', () => {
+xdescribe('ProductEditComponent', () => {
   // component
-  let productDetailComponent: ProductDetailComponent;
+  let productEditComponent: ProductEditComponent;
 
   // fixture
-  let fixture: ComponentFixture<ProductDetailComponent>;
+  let fixture: ComponentFixture<ProductEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -23,7 +23,7 @@ xdescribe('ProductDetailComponent', () => {
         HttpClientTestingModule,
       ],
       // components
-      declarations: [ ProductDetailComponent ],
+      declarations: [ ProductEditComponent ],
       // services
       providers: [],
       // schemas
@@ -33,20 +33,20 @@ xdescribe('ProductDetailComponent', () => {
 
   beforeEach(() => {
     // create instance of component fixture
-    fixture = TestBed.createComponent(ProductDetailComponent);
+    fixture = TestBed.createComponent(ProductEditComponent);
 
     // create instance of component
-    productDetailComponent = fixture.componentInstance;
+    productEditComponent = fixture.componentInstance;
 
     // run change detection
     fixture.detectChanges();
   });
 
-  it('should be named ProductDetailComponent', () => {
-    expect(ProductDetailComponent.name).toBe('ProductDetailComponent');
+  it('should be named ProductEditComponent', () => {
+    expect(ProductEditComponent.name).toBe('ProductEditComponent');
   });
 
-  it('should create ProductDetailComponent', () => {
-    expect(productDetailComponent).toBeTruthy();
+  it('should create ProductEditComponent', () => {
+    expect(productEditComponent).toBeTruthy();
   });
 });
