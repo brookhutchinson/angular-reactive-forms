@@ -4,19 +4,19 @@ import { RouterModule }           from '@angular/router';
 import { ReactiveFormsModule }    from '@angular/forms';
 
 // shared modules
-import { SharedModule }           from './../shared/shared.module';
+import { SharedModule }           from '../shared/shared.module';
 
 // imports for loading & configuring the in-memory web api
 import { InMemoryWebApiModule }   from 'angular-in-memory-web-api';
-import { ProductData }            from './product-data';
+import { ProductData }            from '../../data/product-data';
 
 // components
-import { ProductListComponent }   from './product-list.component';
-import { ProductDetailComponent } from './product-detail.component';
-import { ProductEditComponent }   from './product-edit.component';
+import { ProductListComponent }   from './components/product-list/product-list.component';
+import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { ProductEditComponent }   from './components/product-edit/product-edit.component';
 
 // guards
-import { ProductEditGuard }       from './product-edit.guard';
+import { ProductEditGuard }       from './guards/product-edit/product-edit.guard';
 
 @NgModule({
   // modules

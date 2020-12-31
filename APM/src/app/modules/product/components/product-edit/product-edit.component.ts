@@ -12,16 +12,16 @@ import { FormGroup }                from '@angular/forms';
 import { Validators }               from '@angular/forms';
 
 // form validators
-import { NumberValidators }         from './../shared/number.validator';
-import { GenericValidator }         from './../shared/generic-validator';
+import { NumberValidators }         from '../../../shared/validators/number.validator';
+import { GenericValidator }         from '../../../shared/validators/generic-validator';
 
 // services
 import { ActivatedRoute }           from '@angular/router';
 import { Router }                   from '@angular/router';
-import { ProductService }           from './product.service';
+import { ProductService }           from '../../../../services/product.service';
 
 // interfaces
-import { Product }                  from './product';
+import { Product }                  from '../../../../interfaces/product';
 
 // rxjs
 import { Observable }               from 'rxjs';
@@ -31,7 +31,8 @@ import { Subscription }             from 'rxjs';
 import { debounceTime }             from 'rxjs/operators';
 
 @Component({
-  templateUrl: './product-edit.component.html'
+  templateUrl: './product-edit.component.html',
+  styleUrls: ['./product-edit.component.scss']
 })
 export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];

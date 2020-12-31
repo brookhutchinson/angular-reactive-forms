@@ -4,11 +4,12 @@ import { CommonModule }  from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 
 // components
-import { StarComponent } from './star.component';
+import { StarComponent } from './components/star/star.component';
 
 @NgModule({
   // modules
   imports: [
+    // angular modules
     CommonModule
   ],
   // components
@@ -17,7 +18,7 @@ import { StarComponent } from './star.component';
   ],
   // exports
   exports: [
-    // modules
+    // angular modules
     CommonModule,
     FormsModule,
     // components

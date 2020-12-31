@@ -5,11 +5,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule }     from '@angular/router';
 
 // features modules
-import { ProductModule }    from './products/product.module';
+import { ProductModule }    from './modules/product/product.module';
 
 // components
 import { AppComponent }     from './app.component';
-import { WelcomeComponent } from './home/welcome.component';
+import { WelcomeComponent } from './modules/home/components/welcome/welcome.component';
 
 @NgModule({
   // components

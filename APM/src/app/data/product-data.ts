@@ -2,7 +2,7 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
 // interfaces
-import { Product } from './product';
+import { Product } from '../interfaces/product';
 
 export class ProductData implements InMemoryDbService {
   createDb(): { products: Product[] } {

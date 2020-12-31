@@ -2,10 +2,10 @@
 import { Component, OnInit } from '@angular/core';
 
 // services
-import { ProductService }    from './product.service';
+import { ProductService }    from '../../../../services/product.service';
 
 // interfaces
-import { Product }           from './product';
+import { Product }           from '../../../../interfaces/product';
 
 @Component({
   templateUrl: './product-list.component.html',

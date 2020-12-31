@@ -11,7 +11,7 @@ import { map }        from 'rxjs/operators';
 import { tap }        from 'rxjs/operators';
 
 // interfaces
-import { Product }    from './product';
+import { Product }    from '../interfaces/product';
 
 @Injectable({
   providedIn: 'root'

@@ -4,14 +4,14 @@ import { Component, OnInit } from '@angular/core';
 // services
 import { ActivatedRoute }    from '@angular/router';
 import { Router }            from '@angular/router';
-import { ProductService }    from './product.service';
+import { ProductService }    from '../../../../services/product.service';
 
 // interfaces
-import { Product }           from './product';
+import { Product }           from '../../../../interfaces/product';
 
 @Component({
   templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.css']
+  styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
   pageTitle = 'Product Detail';
