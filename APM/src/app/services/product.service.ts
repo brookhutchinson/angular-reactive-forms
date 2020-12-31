@@ -3,15 +3,15 @@ import { HttpClient }  from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable } from 'rxjs';
-import { of }         from 'rxjs';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { map }        from 'rxjs/operators';
-import { tap }        from 'rxjs/operators';
+import { Observable }  from 'rxjs';
+import { of }          from 'rxjs';
+import { throwError }  from 'rxjs';
+import { catchError }  from 'rxjs/operators';
+import { map }         from 'rxjs/operators';
+import { tap }         from 'rxjs/operators';
 
 // interfaces
-import { Product }    from '../interfaces/product';
+import { Product }    from './../interfaces/product';
 
 @Injectable({
   providedIn: 'root'
@@ -93,14 +93,17 @@ export class ProductService {
     let errorMessage: string;
 
     if (err.error instanceof ErrorEvent) {
-      // a client-side or network error occurred. Handle it accordingly
+      // client-side-error
       errorMessage = `An error occurred: ${err.error.message}`;
     } else {
-      // the backend returned an unsuccessful response code
-      // the response body may contain clues as to what went wrong
+      // server-side-error
       errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
     }
+
+    // log to console
     console.error(err);
+
+    // throw error
     return throwError(errorMessage);
   }
 
