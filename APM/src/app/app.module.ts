@@ -1,39 +1,33 @@
-// angular modules
+// modules
 import { NgModule }         from '@angular/core';
 import { BrowserModule }    from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule }     from '@angular/router';
 
-// features modules
+// feature modules
+import { HomeModule }       from './modules/home/home.module';
 import { ProductModule }    from './modules/product/product.module';
+
+// app routing module
+import { AppRoutingModule } from './app.routing.module';
 
 // components
 import { AppComponent }     from './app.component';
-import { WelcomeComponent } from './modules/home/components/welcome/welcome.component';
 
 @NgModule({
-  // components
-  declarations: [
-    AppComponent,
-    WelcomeComponent
-  ],
   // modules
   imports: [
     // angular modules
-    BrowserModule,
-    HttpClientModule,
-    RouterModule.forRoot([
-      // welcome route
-      { path: 'welcome', component: WelcomeComponent },
-      // default route
-      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
-      // wildcard route
-      { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
-    ],
-    { relativeLinkResolution: 'legacy' }),
+    BrowserModule, HttpClientModule, RouterModule,
     // feature modules
-    ProductModule
+    HomeModule, ProductModule,
+    // app routing module
+    AppRoutingModule
   ],
+  // components
+  declarations: [ AppComponent ],
+  // services
+  providers: [],
   // bootstrap
   bootstrap: [ AppComponent ]
 })
