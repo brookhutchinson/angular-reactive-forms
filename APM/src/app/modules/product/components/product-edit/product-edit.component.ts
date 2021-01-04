@@ -23,6 +23,7 @@ import { ProductService }           from './../../../../services/product.service
 
 // interfaces
 import { Product }                  from './../../../../interfaces/product';
+import { ParamMap }                 from '@angular/router';
 
 // rxjs
 import { Observable }               from 'rxjs';
@@ -85,10 +86,13 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       description: ''
     });
 
-    // get product id from the route parameter
+    // watch for any changes to url parameters
     this.sub = this.route.paramMap.subscribe(
-      (params) => {
+      (params: ParamMap) => {
+        // get product id for selected product from url
         const id = +params.get('id');
+
+        // get data for selected product
         this.getProduct(id);
       }
     );
