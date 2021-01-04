@@ -12,16 +12,17 @@ import { FormGroup }                from '@angular/forms';
 import { Validators }               from '@angular/forms';
 
 // form validators
-import { NumberValidators }         from '../../../shared/validators/number.validator';
-import { GenericValidator }         from '../../../shared/validators/generic-validator';
+import { NumberValidators }         from './../../../shared/validators/number.validator';
+import { GenericValidator }         from './../../../shared/validators/generic-validator';
 
 // services
 import { ActivatedRoute }           from '@angular/router';
+import { HttpErrorResponse }        from '@angular/common/http';
 import { Router }                   from '@angular/router';
-import { ProductService }           from '../../../../services/product.service';
+import { ProductService }           from './../../../../services/product.service';
 
 // interfaces
-import { Product }                  from '../../../../interfaces/product';
+import { Product }                  from './../../../../interfaces/product';
 
 // rxjs
 import { Observable }               from 'rxjs';
@@ -54,7 +55,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private productService: ProductService) {
-    // define all of the validation messages for the form
+    // define validation messages for the form
     this.validationMessages = {
       productName: {
         required: 'Product name is required.',
@@ -69,12 +70,13 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
 
-    // define an instance of the validator for use with this form,
-    // passing in this form's set of validation messages
+    // define an instance of the validator for use with this form
+    // pass in the validation messages for form
     this.genericValidator = new GenericValidator(this.validationMessages);
   }
 
   ngOnInit() {
+    // build root form group and populate form controls for selected product
     this.productForm = this.fb.group({
       productName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       productCode: ['', Validators.required],
@@ -83,9 +85,9 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       description: ''
     });
 
-    // read the product id from the route parameter
+    // get product id from the route parameter
     this.sub = this.route.paramMap.subscribe(
-      params => {
+      (params) => {
         const id = +params.get('id');
         this.getProduct(id);
       }
@@ -102,7 +104,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     const controlBlurs: Observable<any>[] = this.formInputElements
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
-    // Merge the blur event observable with the valueChanges observable so we only need to subscribe once
+    // merge the blur event observable with the valueChanges observable so we only need to subscribe once
     merge(this.productForm.valueChanges, ...controlBlurs).pipe(
       debounceTime(800)
     ).subscribe(value => {
@@ -120,10 +122,12 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getProduct(id: number) {
-    this.productService.getProduct(id).subscribe({
-      next: (product: Product) => this.displayProduct(product),
-      error: err => this.errorMessage = err
-    });
+    this.productService.getProduct(id).subscribe(
+      // on success
+      (product: Product) => this.displayProduct(product),
+      // on error
+      (errorResponse: HttpErrorResponse) => this.errorMessage = errorResponse.message
+    );
   }
 
   displayProduct(product: Product) {
@@ -134,12 +138,14 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.product = product;
 
     if (this.product.id === 0) {
+      // new product
       this.pageTitle = 'Add Product';
     } else {
+      // existing product
       this.pageTitle = `Edit Product: ${this.product.productName}`;
     }
 
-    // update the data on the form
+    // update data on form
     this.productForm.patchValue({
       productName: this.product.productName,
       productCode: this.product.productCode,
@@ -152,14 +158,18 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   deleteProduct(): void {
     if (this.product.id === 0) {
-      // do not delete, it was never saved
+      // new product, do not delete, product was never saved
       this.onSaveComplete();
+
     } else {
+      // existing product
       if (confirm(`Really delete the product: ${this.product.productName}?`)) {
-        this.productService.deleteProduct(this.product.id).subscribe({
-          next: () => this.onSaveComplete(),
-          error: err => this.errorMessage = err
-        });
+        this.productService.deleteProduct(this.product.id).subscribe(
+          // on success
+          () => this.onSaveComplete(),
+          // on error
+          (errorResponse: HttpErrorResponse) => this.errorMessage = errorResponse.message
+        );
       }
     }
   }
@@ -170,17 +180,22 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
         const p = { ...this.product, ...this.productForm.value };
 
         if (p.id === 0) {
-          this.productService.createProduct(p).subscribe({
-            next: () => this.onSaveComplete(),
-            error: err => this.errorMessage = err
-          });
+          // new product
+          this.productService.createProduct(p).subscribe(
+            // on success
+            () => this.onSaveComplete(),
+            // on error
+            (errorResponse: HttpErrorResponse) => this.errorMessage = errorResponse.message
+          );
 
         } else {
-          this.productService.updateProduct(p)
-            .subscribe({
-              next: () => this.onSaveComplete(),
-              error: err => this.errorMessage = err
-            });
+          // existing product
+          this.productService.updateProduct(p).subscribe(
+            // on success
+            () => this.onSaveComplete(),
+            // on error
+            (errorResponse: HttpErrorResponse) => this.errorMessage = errorResponse.message
+          );
         }
 
       } else {
