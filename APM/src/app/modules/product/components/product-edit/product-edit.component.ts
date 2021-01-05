@@ -44,7 +44,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   productForm: FormGroup;
 
   product: Product;
-  private sub: Subscription;
+  private routeParametersSubscription: Subscription;
 
   // use with the generic validation message class
   displayMessage: { [key: string]: string } = {};
@@ -56,7 +56,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private productService: ProductService) {
-    // define validation messages for the form
+    // validation messages for the form
     this.validationMessages = {
       productName: {
         required: 'Product name is required.',
@@ -71,13 +71,13 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
 
-    // define an instance of the validator for use with this form
+    // create an instance of the validator for use with this form
     // pass in the validation messages for form
     this.genericValidator = new GenericValidator(this.validationMessages);
   }
 
   ngOnInit() {
-    // build root form group and populate form controls for selected product
+    // create root form group and populate form controls for selected product
     this.productForm = this.fb.group({
       productName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       productCode: ['', Validators.required],
@@ -86,20 +86,20 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       description: ''
     });
 
-    // watch for any changes to url parameters
-    this.sub = this.route.paramMap.subscribe(
+    // watch for any changes to url route parameters
+    this.routeParametersSubscription = this.route.paramMap.subscribe(
       (params: ParamMap) => {
         // get product id for selected product from url
         const id = +params.get('id');
 
-        // get data for selected product
+        // get selected product
         this.getProduct(id);
       }
     );
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.routeParametersSubscription.unsubscribe();
   }
 
   ngAfterViewInit() {
