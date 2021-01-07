@@ -3,7 +3,7 @@ import { HttpClient }  from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
 // rxjs
-import { Observable }  from 'rxjs';
+import { Observable, pipe }  from 'rxjs';
 import { of }          from 'rxjs';
 import { throwError }  from 'rxjs';
 import { catchError }  from 'rxjs/operators';
@@ -20,32 +20,6 @@ export class ProductService {
   private productsUrl = 'api/products';
 
   constructor(private http: HttpClient) {}
-
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.productsUrl)
-      .pipe(
-        // write to console
-        tap(data => console.log(JSON.stringify(data))),
-        // catch error
-        catchError(this.handleError)
-      );
-  }
-
-  getProduct(id: number): Observable<Product> {
-    if (id === 0) {
-      return of(this.initializeProduct());
-    }
-
-    const url = `${this.productsUrl}/${id}`;
-
-    return this.http.get<Product>(url)
-      .pipe(
-        // write to console
-        tap(data => console.log('getProduct: ' + JSON.stringify(data))),
-        // catch error
-        catchError(this.handleError)
-      );
-  }
 
   createProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -69,6 +43,41 @@ export class ProductService {
       .pipe(
         // write to console
         tap(data => console.log('deleteProduct: ' + id)),
+        // catch error
+        catchError(this.handleError)
+      );
+  }
+
+  getProduct(id: number): Observable<Product> {
+    const url: string = `${this.productsUrl}/${id}`
+
+    if (id === 0) {
+      // new product
+      return of(this.initializeProduct())
+        .pipe(
+          // write to console
+          tap((product) => console.table(product)),
+          // catch error
+          catchError(this.handleError)
+        );
+
+    } else {
+      // edit product
+      return this.http.get<Product>(url)
+        .pipe(
+          // write to console
+          tap((product) => console.table(product)),
+          // catch error
+          catchError(this.handleError)
+        );
+    }
+  }
+
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.productsUrl)
+      .pipe(
+        // write to console
+        tap((products) => console.table(products)),
         // catch error
         catchError(this.handleError)
       );
