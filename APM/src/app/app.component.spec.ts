@@ -32,6 +32,6 @@ describe('AppComponent', () => {
 
     const app = fixture.debugElement.componentInstance;
 
-    expect(app.pageTitle).toEqual('ACME');
+    expect(app.pageTitle).toEqual('ACME Product Management');
   });
 });
