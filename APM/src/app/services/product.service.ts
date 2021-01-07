@@ -1,17 +1,18 @@
-import { Injectable }  from '@angular/core';
-import { HttpClient }  from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
+import { Injectable }        from '@angular/core';
+import { HttpClient }        from '@angular/common/http';
+import { HttpHeaders }       from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 // rxjs
-import { Observable, pipe }  from 'rxjs';
-import { of }          from 'rxjs';
-import { throwError }  from 'rxjs';
-import { catchError }  from 'rxjs/operators';
-import { map }         from 'rxjs/operators';
-import { tap }         from 'rxjs/operators';
+import { Observable }        from 'rxjs';
+import { of }                from 'rxjs';
+import { throwError }        from 'rxjs';
+import { catchError }        from 'rxjs/operators';
+import { map }               from 'rxjs/operators';
+import { tap }               from 'rxjs/operators';
 
 // interfaces
-import { Product }    from './../interfaces/product';
+import { Product }           from './../interfaces/product';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,7 @@ export class ProductService {
   }
 
   getProduct(id: number): Observable<Product> {
-    const url: string = `${this.productsUrl}/${id}`
+    const url: string = `${this.productsUrl}/${id}`;
 
     if (id === 0) {
       // new product
@@ -98,19 +99,19 @@ export class ProductService {
       );
   }
 
-  private handleError(err): Observable<never> {
-    let errorMessage: string;
+  handleError(errorObject: HttpErrorResponse) {
+    let errorMessage: string = '';
 
-    if (err.error instanceof ErrorEvent) {
-      // client-side-error
-      errorMessage = `An error occurred: ${err.error.message}`;
+    if (errorObject.error instanceof ErrorEvent) {
+      // client-side error
+      errorMessage = `Client-Side Error occurred: ${errorObject.error.message}`;
     } else {
-      // server-side-error
-      errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
+      // server-side error
+      errorMessage = `Server-Side Error occurred: Http Response Code ${errorObject.status}, error message: ${errorObject.message}`;
     }
 
     // log to console
-    console.error(err);
+    console.error(errorMessage);
 
     // throw error
     return throwError(errorMessage);
