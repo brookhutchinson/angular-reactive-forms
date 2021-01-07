@@ -56,7 +56,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private productService: ProductService) {
-    // validation messages for the form
+    // form validation messages
     this.validationMessages = {
       productName: {
         required: 'Product name is required.',
@@ -71,7 +71,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     };
 
-    // create an instance of the validator for use with this form
+    // create an instance of the validator class for use with this form
     // pass in the validation messages for form
     this.genericValidator = new GenericValidator(this.validationMessages);
   }
@@ -120,18 +120,27 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tags.push(new FormControl());
   }
 
+  deleteProduct(): void {
+    if (this.product.id === 0) {
+      // new product, do not delete, product was never saved
+      this.onSaveComplete();
+
+    } else {
+      // existing product
+      if (confirm(`Really delete the product: ${this.product.productName}?`)) {
+        this.productService.deleteProduct(this.product.id).subscribe(
+          // on success
+          () => this.onSaveComplete(),
+          // on error
+          (errorResponse: HttpErrorResponse) => this.errorMessage = errorResponse.message
+        );
+      }
+    }
+  }
+
   deleteTag(index: number) {
     this.tags.removeAt(index);
     this.tags.markAsDirty();
-  }
-
-  getProduct(id: number) {
-    this.productService.getProduct(id).subscribe(
-      // on success
-      (product: Product) => this.displayProduct(product),
-      // on error
-      (errorResponse: HttpErrorResponse) => this.errorMessage = errorResponse.message
-    );
   }
 
   displayProduct(product: Product) {
@@ -160,22 +169,21 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
   }
 
-  deleteProduct(): void {
-    if (this.product.id === 0) {
-      // new product, do not delete, product was never saved
-      this.onSaveComplete();
+  getProduct(id: number) {
+    this.productService.getProduct(id).subscribe(
+      // on success
+      (product: Product) => this.displayProduct(product),
+      // on error
+      (errorResponse: HttpErrorResponse) => this.errorMessage = errorResponse.message
+    );
+  }
 
-    } else {
-      // existing product
-      if (confirm(`Really delete the product: ${this.product.productName}?`)) {
-        this.productService.deleteProduct(this.product.id).subscribe(
-          // on success
-          () => this.onSaveComplete(),
-          // on error
-          (errorResponse: HttpErrorResponse) => this.errorMessage = errorResponse.message
-        );
-      }
-    }
+  onSaveComplete() {
+    // reset form to clear the flags
+    this.productForm.reset();
+
+    // navigate to product list component
+    this.router.navigate(['/products']);
   }
 
   saveProduct() {
@@ -209,13 +217,5 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.errorMessage = 'Please correct the validation errors.';
     }
-  }
-
-  onSaveComplete() {
-    // reset form to clear the flags
-    this.productForm.reset();
-
-    // navigate to product list component
-    this.router.navigate(['/products']);
   }
 }
