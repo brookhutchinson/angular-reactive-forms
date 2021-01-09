@@ -145,11 +145,14 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayProduct(product: Product) {
     if (this.productForm) {
+      // reset form state
       this.productForm.reset();
     }
 
+    // set property to retrieved product
     this.product = product;
 
+    // set page title
     if (this.product.id === 0) {
       // new product
       this.pageTitle = 'Add Product';
@@ -158,7 +161,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pageTitle = `Edit Product: ${this.product.productName}`;
     }
 
-    // update data on form
+    // populate form controls
     this.productForm.patchValue({
       productName: this.product.productName,
       productCode: this.product.productCode,
@@ -166,6 +169,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       description: this.product.description
     });
 
+    // populate tag form controls array
     this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
   }
 

@@ -28,13 +28,13 @@ export class GenericValidator {
     for (const controlKey in container.controls) {
       if (container.controls.hasOwnProperty(controlKey)) {
         const c = container.controls[controlKey];
-        // If it is a FormGroup, process its child controls.
+        // if it is a FormGroup, process its child controls
         if (c instanceof FormGroup) {
           const childMessages = this.processMessages(c);
           Object.assign(messages, childMessages);
 
         } else {
-          // Only validate if there are validation messages for the control
+          // only validate if there are validation messages for the control
           if (this.validationMessages[controlKey]) {
             messages[controlKey] = '';
             if ((c.dirty || c.touched) && c.errors) {
