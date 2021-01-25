@@ -1,3 +1,4 @@
+// services
 import { Injectable }        from '@angular/core';
 import { HttpClient }        from '@angular/common/http';
 import { HttpHeaders }       from '@angular/common/http';
@@ -118,7 +119,7 @@ export class ProductService {
   }
 
   private initializeProduct(): Product {
-    // return an initialized object
+    // return an initialized product object
     return {
       id: 0,
       productName: null,
