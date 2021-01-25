@@ -31,7 +31,7 @@ export class ProductService {
     return this.http.post<Product>(this.productsUrl, product, { headers: headers })
       .pipe(
         // write to console
-        tap(data => console.log('createProduct: ' + JSON.stringify(data))),
+        tap(data => console.log('createProduct(): ' + JSON.stringify(data))),
         // catch error
         catchError(this.handleError)
       );
@@ -44,7 +44,7 @@ export class ProductService {
     return this.http.delete<Product>(url, { headers: headers })
       .pipe(
         // write to console
-        tap(data => console.log('deleteProduct: ' + id)),
+        tap(data => console.log('deleteProduct(): ' + id)),
         // catch error
         catchError(this.handleError)
       );
@@ -92,7 +92,7 @@ export class ProductService {
     return this.http.put<Product>(url, product, { headers: headers })
       .pipe(
         // write to console
-        tap(() => console.log('update product: ' + product.id)),
+        tap(() => console.log('updateProduct(): ' + product.id)),
         // return the product on an update
         map(() => product),
         // catch error
