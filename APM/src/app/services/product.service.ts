@@ -31,7 +31,7 @@ export class ProductService {
     return this.http.post<Product>(this.productsUrl, product, { headers: headers })
       .pipe(
         // write to console
-        tap(data => console.log('createProduct(): ' + JSON.stringify(data))),
+        tap(product => console.log('createProduct(): ' + JSON.stringify(product))),
         // catch error
         catchError(this.handleError)
       );
