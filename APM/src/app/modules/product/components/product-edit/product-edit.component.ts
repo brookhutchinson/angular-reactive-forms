@@ -122,12 +122,12 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   deleteProduct(): void {
     if (this.product.id === 0) {
-      // new product, do not delete, product was never saved
+      // new product, do not issue delete request since does not exist
       this.onSaveComplete();
 
     } else {
       // existing product
-      if (confirm(`Really delete the product: ${this.product.productName}?`)) {
+      if (confirm(`Do you really want to delete this product: ${this.product.productName}?`)) {
         this.productService.deleteProduct(this.product.id).subscribe(
           // on success
           () => this.onSaveComplete(),
