@@ -19,7 +19,7 @@ import { Product }           from './../interfaces/product';
   providedIn: 'root'
 })
 export class ProductService {
-  private productsUrl = 'api/products';
+  private baseUrl = 'api/products';
 
   constructor(private http: HttpClient) {}
 
@@ -28,7 +28,7 @@ export class ProductService {
 
     product.id = null;
 
-    return this.http.post<Product>(this.productsUrl, product, { headers: headers })
+    return this.http.post<Product>(this.baseUrl, product, { headers: headers })
       .pipe(
         // write to console
         tap(product => console.log('createProduct(): ' + JSON.stringify(product))),
@@ -39,7 +39,7 @@ export class ProductService {
 
   deleteProduct(id: number): Observable<{}> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const url = `${this.productsUrl}/${id}`;
+    const url = `${this.baseUrl}/${id}`;
 
     return this.http.delete<Product>(url, { headers: headers })
       .pipe(
@@ -51,7 +51,7 @@ export class ProductService {
   }
 
   getProduct(id: number): Observable<Product> {
-    const url: string = `${this.productsUrl}/${id}`;
+    const url: string = `${this.baseUrl}/${id}`;
 
     if (id === 0) {
       // new product
@@ -76,7 +76,7 @@ export class ProductService {
   }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.productsUrl)
+    return this.http.get<Product[]>(this.baseUrl)
       .pipe(
         // write to console
         tap((products) => console.table(products)),
@@ -87,7 +87,7 @@ export class ProductService {
 
   updateProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const url = `${this.productsUrl}/${product.id}`;
+    const url = `${this.baseUrl}/${product.id}`;
 
     return this.http.put<Product>(url, product, { headers: headers })
       .pipe(
