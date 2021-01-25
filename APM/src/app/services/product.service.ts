@@ -92,7 +92,7 @@ export class ProductService {
     return this.http.put<Product>(url, product, { headers })
       .pipe(
         // write to console
-        tap(() => console.log('updateProduct: ' + product.id)),
+        tap(() => console.log('update product: ' + product.id)),
         // return the product on an update
         map(() => product),
         // catch error

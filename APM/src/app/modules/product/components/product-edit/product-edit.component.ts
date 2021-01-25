@@ -183,7 +183,9 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSaveComplete() {
-    // reset form to clear the flags
+    // reset form to clear form validtion errors
+    // so that route guard knows that form changes have been saved successfully
+    // otherwise route guard will think that the form is dirty and the form has unsaved changes
     this.productForm.reset();
 
     // navigate to product list component
@@ -191,8 +193,17 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   saveProduct() {
+    // check if form values are valid values
     if (this.productForm.valid) {
+      // form values are valid values
+
+      // check if form values have been changed
       if (this.productForm.dirty) {
+        // form values have been changed
+
+        // create new product object named p
+        // use spread operator to copy user entered form values over product model
+        // product model may contain properties that were not include on the form
         const p = { ...this.product, ...this.productForm.value };
 
         if (p.id === 0) {
@@ -215,10 +226,14 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
       } else {
+        // form values have not been changed
         this.onSaveComplete();
       }
 
     } else {
+      // form values are not valid values
+
+      // stay on product edit page, display error message
       this.errorMessage = 'Please correct the validation errors.';
     }
   }
