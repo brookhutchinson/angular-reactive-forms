@@ -28,7 +28,7 @@ export class ProductService {
 
     product.id = null;
 
-    return this.http.post<Product>(this.productsUrl, product, { headers })
+    return this.http.post<Product>(this.productsUrl, product, { headers: headers })
       .pipe(
         // write to console
         tap(data => console.log('createProduct: ' + JSON.stringify(data))),
@@ -41,7 +41,7 @@ export class ProductService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const url = `${this.productsUrl}/${id}`;
 
-    return this.http.delete<Product>(url, { headers })
+    return this.http.delete<Product>(url, { headers: headers })
       .pipe(
         // write to console
         tap(data => console.log('deleteProduct: ' + id)),
@@ -89,7 +89,7 @@ export class ProductService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const url = `${this.productsUrl}/${product.id}`;
 
-    return this.http.put<Product>(url, product, { headers })
+    return this.http.put<Product>(url, product, { headers: headers })
       .pipe(
         // write to console
         tap(() => console.log('update product: ' + product.id)),
