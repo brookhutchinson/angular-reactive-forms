@@ -189,7 +189,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productForm.reset();
 
     // navigate to product list component
-    this.router.navigate(['/products']);
+    this.router.navigate(['/product']);
   }
 
   saveProduct() {

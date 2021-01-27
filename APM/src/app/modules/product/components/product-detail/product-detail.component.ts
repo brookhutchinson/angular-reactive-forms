@@ -37,6 +37,6 @@ export class ProductDetailComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/products']);
+    this.router.navigate(['/product']);
   }
 }

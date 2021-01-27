@@ -14,11 +14,11 @@ import { ProductEditGuard }       from './guards/product-edit/product-edit.guard
 // define routes
 const routes: Routes = [
   // product list route
-  { path: 'products', component: ProductListComponent },
+  { path: '', component: ProductListComponent },
   // product detail route
-  { path: 'products/:id', component: ProductDetailComponent },
+  { path: ':id', component: ProductDetailComponent },
   // product edit route
-  { path: 'products/:id/edit', canDeactivate: [ProductEditGuard], component: ProductEditComponent }
+  { path: ':id/edit', canDeactivate: [ProductEditGuard], component: ProductEditComponent }
 ];
 
 @NgModule({
